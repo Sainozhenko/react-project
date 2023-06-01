@@ -1,0 +1,8 @@
+.div_wrapper{
+    margin: 40px;
+}
+
+.border{
+    border: 2px solid var(--border-color);
+}
+

@@ -1,35 +1,80 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { ChangeEvent, FC, FormEvent, useState } from 'react';
+import css from './App.module.css';
+interface Field{
+  name:string,
+  password:string;
+}
 
-function App() {
-  const [count, setCount] = useState(0)
+const initFormField:Field = {
+  name: "",
+  password:""
+};
+
+ const App:FC = ()=> {
+  const[name, setName] = useState("");
+  const[password, setPassword] = useState("");
+  const[fields, setFields] = useState(initFormField);
+  const getInputData =(event: ChangeEvent<HTMLInputElement>)=>{
+    
+    const{name , value} = event.target;
+
+    if(name === "name") {
+      setName(value);
+    console.log("🚀 Name value:", value)
+
+    }else if(name === "password"){
+      setPassword(value);
+    console.log("🚀 Password value:", value)
+
+    }
+  setFields((prevState) => {
+    return {
+      ...prevState,
+      [name]:value,
+    };
+  });
+  
+  };
+  
+const submitForm =(event:FormEvent<HTMLFormElement>) =>{
+event.preventDefault();
+
+console.log(fields);
+resetForm();
+};
+
+const resetForm =() =>{
+  setName("")
+  setPassword("");
+};
+
 
   return (
     <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className={css.div_wrapper}>
+        <form onSubmit={submitForm}>
+          <label>Name: </label>
+          <input type="text" 
+          name="name"
+          value={name}
+          onChange={getInputData}
+          autoComplete='off'
+          />
+          <label>Password:</label>
+          <input 
+          type="password"
+          value={password}
+          name="password"
+          onChange={getInputData}
+          autoComplete='off'
+           />
+           <button type='submit'>ADD</button>
+        </form>
+       
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+
     </>
-  )
-}
+  );
+};
 
 export default App
